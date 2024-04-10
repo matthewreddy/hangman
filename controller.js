@@ -16,6 +16,8 @@ export class Controller {
     }
 
     guessLetter(letter) {
+        letter = letter.toUpperCase();
+
         if (this.#model.getLettersNotGuessed().includes(letter) === false) {
             alert("Controller error: Invalid guess.");
             return;

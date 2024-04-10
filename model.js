@@ -20,14 +20,14 @@ export class Model extends EventTarget {
     }
 
     start() {
-        this.dispatchEvent(new Event("start"));
-
-        this.#word = "ABCDEF";
+        this.#word = "AABBBCCDEF";
         this.#lettersLeft = this.#word.split("");
         this.#revealer = "";
         for (let i = 0; i < this.#word.length; i++) {
             this.#revealer += "_";
         }
+
+        this.dispatchEvent(new Event("start"));
     }
 
     guessLetter(letter) {
@@ -35,7 +35,20 @@ export class Model extends EventTarget {
 
         if (this.#word.includes(letter)) {
             this.#correctLetters.push(letter);
-            this.#lettersLeft.splice(this.#lettersLeft.indexOf(letter), 1);
+
+            // count number of times letter appears in word
+            let letterOccurrences = 0;
+            for (let i = 0; i < this.#word.length; i++) {
+                if (this.#word[i] === letter) {
+                    letterOccurrences++;
+                }
+            }
+
+            // remove each occurrence of letter
+            for (let i = 0; i < letterOccurrences; i++) {
+                this.#lettersLeft.splice(this.#lettersLeft.indexOf(letter), 1);
+            }
+
             correct = true;
             let revealerUpdate = "";
 
@@ -44,10 +57,10 @@ export class Model extends EventTarget {
                     // reveal the guessed letter
                     revealerUpdate += letter.toUpperCase();
                 } else if (this.#revealer[i] !== "_") {
-                    // letter previously guessed
+                    // a letter previously guessed
                     revealerUpdate += this.#revealer[i];
                 } else {
-                    // letter not yet guessed
+                    // a letter not yet guessed
                     revealerUpdate += "_";
                 }
             }

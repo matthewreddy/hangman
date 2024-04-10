@@ -8,44 +8,117 @@ export class View {
     }
 
     render(render_div) {
-        let out = document.createElement("textarea");
-        out.style.width = "800px";
-        out.style.height = "800px";
-        out.readOnly = true;
+        let header = document.createElement("h1");
+        header.innerText = "Your guess: ";
+        render_div.append(header);
 
-        let cli = document.createElement("input");
-        cli.type = "text";
-        cli.style.width = "800px";
+        let hang = document.createElement("div");
+        hang.classList.add("hang");
+        render_div.append(hang);
 
-        render_div.append(out);
-        render_div.append(document.createElement("br"));
-        render_div.append(cli);
+        let keyboard = document.createElement("div");
 
-        cli.addEventListener("change", () => {
-            out.append(`> ${cli.value}\n`);
-            this.#controller.guessLetter(cli.value);
-            cli.value = "";
+        let qKey = document.createElement("button");        
+        let wKey = document.createElement("button");
+        let eKey = document.createElement("button");
+        let rKey = document.createElement("button");
+        let tKey = document.createElement("button");
+        let yKey = document.createElement("button");
+        let uKey = document.createElement("button");
+        let iKey = document.createElement("button");
+        let oKey = document.createElement("button");
+        let pKey = document.createElement("button");
+        let aKey = document.createElement("button");
+        let sKey = document.createElement("button");
+        let dKey = document.createElement("button");
+        let fKey = document.createElement("button");
+        let gKey = document.createElement("button");
+        let hKey = document.createElement("button");
+        let jKey = document.createElement("button");
+        let kKey = document.createElement("button");
+        let lKey = document.createElement("button");
+        let zKey = document.createElement("button");
+        let xKey = document.createElement("button");
+        let cKey = document.createElement("button");
+        let vKey = document.createElement("button");
+        let bKey = document.createElement("button");
+        let nKey = document.createElement("button");
+        let mKey = document.createElement("button");
+
+        qKey.innerText = "Q";
+        wKey.innerText = "W";
+        eKey.innerText = "E";
+        rKey.innerText = "R";
+        tKey.innerText = "T";
+        yKey.innerText = "Y";
+        uKey.innerText = "U";
+        iKey.innerText = "I";
+        oKey.innerText = "O";
+        pKey.innerText = "P";
+        aKey.innerText = "A";
+        sKey.innerText = "S";
+        dKey.innerText = "D";
+        fKey.innerText = "F";
+        gKey.innerText = "G";
+        hKey.innerText = "H";
+        jKey.innerText = "J";
+        kKey.innerText = "K";
+        lKey.innerText = "L";
+        zKey.innerText = "Z";
+        xKey.innerText = "X";
+        cKey.innerText = "C";
+        vKey.innerText = "V";
+        bKey.innerText = "B";
+        nKey.innerText = "N";
+        mKey.innerText = "M";
+
+        keyboard.append(qKey);
+        keyboard.append(wKey);
+        keyboard.append(eKey);
+        keyboard.append(rKey);
+        keyboard.append(tKey);
+        keyboard.append(yKey);
+        keyboard.append(uKey);
+        keyboard.append(iKey);
+        keyboard.append(oKey);
+        keyboard.append(pKey);
+        keyboard.append(aKey);
+        keyboard.append(sKey);
+        keyboard.append(dKey);
+        keyboard.append(fKey);
+        keyboard.append(gKey);
+        keyboard.append(hKey);
+        keyboard.append(jKey);
+        keyboard.append(kKey);
+        keyboard.append(lKey);
+        keyboard.append(zKey);
+        keyboard.append(xKey);
+        keyboard.append(cKey);
+        keyboard.append(vKey);
+        keyboard.append(bKey);
+        keyboard.append(nKey);
+        keyboard.append(mKey);
+
+        render_div.append(keyboard);
+
+        addEventListener("keydown", e => {
+            header.innerText = "Your guess: " + e.key;
         });
 
         this.#model.addEventListener("start", () => {
-            out.append("Game started. Type a letter to guess.\n");
+
         });
 
         this.#model.addEventListener("guess", e => {
-            out.append(`You guessed: ${e.detail.letter}\n`);
-            let res = e.detail.correct ? "correct" : "incorrect";
-            out.append(`That guess was ${res}.\n`);
-            out.append(this.#model.getRevealer() + "\n");
-            out.append(`Incorrect guesses: ${this.#model.getIncorrectLetters().toString()}\n`);
-            out.append(`Guesses remaining: ${this.#model.getGuesses()}\n`);
+
         });
 
         this.#model.addEventListener("loss", () => {
-            out.append("Game lost.\n");
+
         });
 
         this.#model.addEventListener("win", () => {
-            out.append("Game won.\n");
+
         });
 
         this.#controller.start();
