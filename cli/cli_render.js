@@ -1,5 +1,5 @@
-import { Model } from "./model.js";
-import { Controller } from "./controller.js";
+import { Model } from "../model.js";
+import { Controller } from "../controller.js";
 import { CLIView } from "./cli_view.js";
 
 

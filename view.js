@@ -8,14 +8,24 @@ export class View {
     }
 
     render(render_div) {
+        let alphabet = this.#model.getLettersNotGuessed();
+
         let header = document.createElement("h1");
         header.innerText = "Your guess: ";
-        render_div.append(header);
+
+        let revealer = document.createElement("p");
+
+        let updateHeader = (letter) => {
+            letter = letter.toUpperCase();
+            if (alphabet.includes(letter)) {
+                header.innerText = "Your guess: " + letter;
+            }
+        }
 
         let hang = document.createElement("div");
         hang.classList.add("hang");
-        render_div.append(hang);
 
+        // TODO: figure out how to update this whenever a letter is guessed
         let keyboard = document.createElement("div");
 
         let qKey = document.createElement("button");        
@@ -72,6 +82,33 @@ export class View {
         nKey.innerText = "N";
         mKey.innerText = "M";
 
+        qKey.addEventListener("click", () => updateHeader("Q"));
+        wKey.addEventListener("click", () => updateHeader("W"));
+        eKey.addEventListener("click", () => updateHeader("E"));
+        rKey.addEventListener("click", () => updateHeader("R"));
+        tKey.addEventListener("click", () => updateHeader("T"));
+        yKey.addEventListener("click", () => updateHeader("Y"));
+        uKey.addEventListener("click", () => updateHeader("U"));
+        iKey.addEventListener("click", () => updateHeader("I"));
+        oKey.addEventListener("click", () => updateHeader("O"));
+        pKey.addEventListener("click", () => updateHeader("P"));
+        aKey.addEventListener("click", () => updateHeader("A"));
+        sKey.addEventListener("click", () => updateHeader("S"));
+        dKey.addEventListener("click", () => updateHeader("D"));
+        fKey.addEventListener("click", () => updateHeader("F"));
+        gKey.addEventListener("click", () => updateHeader("G"));
+        hKey.addEventListener("click", () => updateHeader("H"));
+        jKey.addEventListener("click", () => updateHeader("J"));
+        kKey.addEventListener("click", () => updateHeader("K"));
+        lKey.addEventListener("click", () => updateHeader("L"));
+        zKey.addEventListener("click", () => updateHeader("Z"));
+        xKey.addEventListener("click", () => updateHeader("X"));
+        cKey.addEventListener("click", () => updateHeader("C"));
+        vKey.addEventListener("click", () => updateHeader("V"));
+        bKey.addEventListener("click", () => updateHeader("B"));
+        nKey.addEventListener("click", () => updateHeader("N"));
+        mKey.addEventListener("click", () => updateHeader("M"));
+        
         keyboard.append(qKey);
         keyboard.append(wKey);
         keyboard.append(eKey);
@@ -99,25 +136,43 @@ export class View {
         keyboard.append(nKey);
         keyboard.append(mKey);
 
-        render_div.append(keyboard);
+        let guessBtn = document.createElement("button");
+        guessBtn.innerText = "Make Guess";
 
-        addEventListener("keydown", e => {
-            header.innerText = "Your guess: " + e.key;
-        });
+        render_div.append(header);
+        render_div.append(revealer);
+        render_div.append(hang);
+        render_div.append(keyboard);
+        render_div.append(document.createElement("br"));
+        render_div.append(guessBtn);
 
         this.#model.addEventListener("start", () => {
-
+            revealer.textContent = this.#model.getRevealer();
+            addEventListener("keydown", e => updateHeader(e.key));
+            guessBtn.addEventListener("click", () => {
+                let letter = header.innerText[header.innerText.length - 1];
+                if (alphabet.includes(letter)) {
+                    this.#controller.guessLetter(letter);
+                }
+            });
         });
 
         this.#model.addEventListener("guess", e => {
+            revealer.textContent = this.#model.getRevealer();
+            alphabet = this.#model.getLettersNotGuessed();
 
         });
 
         this.#model.addEventListener("loss", () => {
-
+            let lossText = document.createElement("p");
+            lossText.textContent = "Game lost.";
+            render_div.append(lossText);
         });
 
         this.#model.addEventListener("win", () => {
+            let winText = document.createElement("p");
+            winText.textContent = "Game won.";
+            render_div.append(winText);
 
         });
 
